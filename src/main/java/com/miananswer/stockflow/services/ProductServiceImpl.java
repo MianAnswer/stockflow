@@ -1,5 +1,7 @@
 package com.miananswer.stockflow.services;
 
+import com.miananswer.stockflow.exceptions.DuplicateSkuException;
+import com.miananswer.stockflow.exceptions.ProductNotFoundException;
 import com.miananswer.stockflow.models.dto.CreateProductRequest;
 import com.miananswer.stockflow.models.dto.ProductResponse;
 import com.miananswer.stockflow.models.dto.UpdateProductRequest;
@@ -8,7 +10,6 @@ import com.miananswer.stockflow.repositories.ProductRepository;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class ProductServiceImpl implements ProductService {
@@ -21,7 +22,7 @@ public class ProductServiceImpl implements ProductService {
     @Override
     public ProductResponse createProduct(CreateProductRequest request) {
         if (productRepository.existsBySku(request.sku())) {
-            throw new IllegalArgumentException("Product with SKU already exists");
+            throw new DuplicateSkuException(request.sku());
         }
 
         Product product = new Product();
@@ -47,22 +48,16 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public ProductResponse getProduct(Long id) {
-        Optional<Product> product = productRepository.findById(id);
-        if (product.isEmpty()) {
-            throw new IllegalArgumentException("Product does not exist");
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
-        return createProductResponse(product.get());
+        return createProductResponse(product);
     }
 
     @Override
     public ProductResponse updateProduct(Long id, UpdateProductRequest request) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new IllegalArgumentException("Product does not exist");
-        }
-
-        Product product = optionalProduct.get();
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
         product.setName(request.name());
         product.setDescription(request.description());
@@ -76,12 +71,10 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public void deleteProduct(Long id) {
-        Optional<Product> optionalProduct = productRepository.findById(id);
-        if (optionalProduct.isEmpty()) {
-            throw new IllegalArgumentException("Product does not exist");
-        }
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new ProductNotFoundException(id));
 
-        productRepository.delete(optionalProduct.get());
+        productRepository.delete(product);
     }
 
     private ProductResponse createProductResponse(Product product) {
