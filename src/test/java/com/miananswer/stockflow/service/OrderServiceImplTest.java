@@ -1,15 +1,14 @@
 package com.miananswer.stockflow.service;
 
-import com.miananswer.stockflow.exceptions.InsufficientInventoryException;
-import com.miananswer.stockflow.exceptions.ProductNotFoundException;
-import com.miananswer.stockflow.models.dto.CreateOrderItemRequest;
-import com.miananswer.stockflow.models.dto.CreateOrderRequest;
-import com.miananswer.stockflow.models.dto.OrderResponse;
-import com.miananswer.stockflow.models.entity.Order;
-import com.miananswer.stockflow.models.entity.Product;
-import com.miananswer.stockflow.repositories.OrderRepository;
-import com.miananswer.stockflow.repositories.ProductRepository;
-import com.miananswer.stockflow.services.OrderServiceImpl;
+import com.miananswer.stockflow.exception.InsufficientInventoryException;
+import com.miananswer.stockflow.exception.ProductNotFoundException;
+import com.miananswer.stockflow.model.dto.CreateOrderItemRequest;
+import com.miananswer.stockflow.model.dto.CreateOrderRequest;
+import com.miananswer.stockflow.model.dto.OrderResponse;
+import com.miananswer.stockflow.model.entity.Order;
+import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.repository.OrderRepository;
+import com.miananswer.stockflow.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

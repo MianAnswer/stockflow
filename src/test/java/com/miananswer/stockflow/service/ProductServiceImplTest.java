@@ -1,12 +1,11 @@
 package com.miananswer.stockflow.service;
 
-import com.miananswer.stockflow.exceptions.DuplicateSkuException;
-import com.miananswer.stockflow.exceptions.ProductNotFoundException;
-import com.miananswer.stockflow.models.dto.CreateProductRequest;
-import com.miananswer.stockflow.models.dto.ProductResponse;
-import com.miananswer.stockflow.models.entity.Product;
-import com.miananswer.stockflow.repositories.ProductRepository;
-import com.miananswer.stockflow.services.ProductServiceImpl;
+import com.miananswer.stockflow.exception.DuplicateSkuException;
+import com.miananswer.stockflow.exception.ProductNotFoundException;
+import com.miananswer.stockflow.model.dto.CreateProductRequest;
+import com.miananswer.stockflow.model.dto.ProductResponse;
+import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;

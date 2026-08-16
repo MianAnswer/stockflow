@@ -1,7 +1,7 @@
 package com.miananswer.stockflow.integration;
 
-import com.miananswer.stockflow.models.entity.Product;
-import com.miananswer.stockflow.repositories.ProductRepository;
+import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.repository.ProductRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

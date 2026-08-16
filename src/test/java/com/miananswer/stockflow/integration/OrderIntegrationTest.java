@@ -1,12 +1,12 @@
 package com.miananswer.stockflow.integration;
 
-import com.miananswer.stockflow.exceptions.InsufficientInventoryException;
-import com.miananswer.stockflow.models.dto.CreateOrderItemRequest;
-import com.miananswer.stockflow.models.dto.CreateOrderRequest;
-import com.miananswer.stockflow.models.entity.Product;
-import com.miananswer.stockflow.repositories.OrderRepository;
-import com.miananswer.stockflow.repositories.ProductRepository;
-import com.miananswer.stockflow.services.OrderService;
+import com.miananswer.stockflow.exception.InsufficientInventoryException;
+import com.miananswer.stockflow.model.dto.CreateOrderItemRequest;
+import com.miananswer.stockflow.model.dto.CreateOrderRequest;
+import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.repository.OrderRepository;
+import com.miananswer.stockflow.repository.ProductRepository;
+import com.miananswer.stockflow.service.OrderService;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
