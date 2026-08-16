@@ -2,6 +2,5 @@
 .gitignore
 .idea
 *.iml
-target/*
 src/*
 README.md
