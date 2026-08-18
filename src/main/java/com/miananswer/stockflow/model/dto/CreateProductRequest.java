@@ -8,20 +8,20 @@ import jakarta.validation.constraints.NotNull;
 import java.math.BigDecimal;
 
 public record CreateProductRequest(
-        @NotBlank
+        @NotBlank(message = "SKU must not be blank")
         String sku,
 
-        @NotBlank
+        @NotBlank(message = "Name must not be blank")
         String name,
 
         String description,
 
-        @NotNull
-        @DecimalMin(value = "0.01")
+        @NotNull(message = "Price is required")
+        @DecimalMin(value = "0.01", message = "Price must be greater than 0")
         BigDecimal price,
 
-        @NotNull
-        @Min(0)
+        @NotNull(message = "Quantity is required")
+        @Min(value = 0, message = "Quantity cannot be negative")
         Integer quantity
 ) {
 }

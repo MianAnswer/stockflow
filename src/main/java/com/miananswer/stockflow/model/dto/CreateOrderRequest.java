@@ -6,8 +6,8 @@ import jakarta.validation.constraints.NotEmpty;
 import java.util.List;
 
 public record CreateOrderRequest(
-        @NotEmpty
+        @NotEmpty(message = "Order must contain at least one item")
         @Valid
-        List<CreateOrderItemRequest> items
+        List<@Valid CreateOrderItemRequest> items
 ) {
 }
