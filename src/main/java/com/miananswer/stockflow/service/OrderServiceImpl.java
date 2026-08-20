@@ -6,28 +6,33 @@ import com.miananswer.stockflow.model.dto.CreateOrderItemRequest;
 import com.miananswer.stockflow.model.dto.CreateOrderRequest;
 import com.miananswer.stockflow.model.dto.OrderItemResponse;
 import com.miananswer.stockflow.model.dto.OrderResponse;
-import com.miananswer.stockflow.model.entity.Order;
-import com.miananswer.stockflow.model.entity.OrderItem;
-import com.miananswer.stockflow.model.entity.OrderStatus;
-import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.model.entity.*;
+import com.miananswer.stockflow.repository.InventoryTransactionRepository;
 import com.miananswer.stockflow.repository.OrderRepository;
 import com.miananswer.stockflow.repository.ProductRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
+import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 
 @Service
 public class OrderServiceImpl implements OrderService {
 
-    ProductRepository productRepository;
-    OrderRepository orderRepository;
+    private final ProductRepository productRepository;
+    private final OrderRepository orderRepository;
+    private final InventoryTransactionRepository inventoryTransactionRepository;
 
-    public OrderServiceImpl(ProductRepository productRepository, OrderRepository orderRepository) {
+    public OrderServiceImpl(
+            ProductRepository productRepository,
+            OrderRepository orderRepository,
+            InventoryTransactionRepository inventoryTransactionRepository) {
+
         this.orderRepository = orderRepository;
         this.productRepository = productRepository;
+        this.inventoryTransactionRepository = inventoryTransactionRepository;
     }
 
     @Override
@@ -61,6 +66,14 @@ public class OrderServiceImpl implements OrderService {
             product.setQuantity(
                     product.getQuantity() - itemRequest.quantity()
             );
+
+            InventoryTransaction transaction = new InventoryTransaction();
+            transaction.setProduct(product);
+            transaction.setType(InventoryTransactionType.ORDER_PLACED);
+            transaction.setQuantity(-itemRequest.quantity());
+            transaction.setCreatedAt(Instant.now());
+
+            inventoryTransactionRepository.save(transaction);
 
             orderItems.add(orderItem);
             total = total.add(subtotal);

@@ -5,13 +5,17 @@ import com.miananswer.stockflow.exception.ProductNotFoundException;
 import com.miananswer.stockflow.model.dto.CreateOrderItemRequest;
 import com.miananswer.stockflow.model.dto.CreateOrderRequest;
 import com.miananswer.stockflow.model.dto.OrderResponse;
+import com.miananswer.stockflow.model.entity.InventoryTransaction;
+import com.miananswer.stockflow.model.entity.InventoryTransactionType;
 import com.miananswer.stockflow.model.entity.Order;
 import com.miananswer.stockflow.model.entity.Product;
+import com.miananswer.stockflow.repository.InventoryTransactionRepository;
 import com.miananswer.stockflow.repository.OrderRepository;
 import com.miananswer.stockflow.repository.ProductRepository;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -33,6 +37,9 @@ public class OrderServiceImplTest {
 
     @Mock
     private OrderRepository orderRepository;
+
+    @Mock
+    private InventoryTransactionRepository inventoryTransactionRepository;
 
     @InjectMocks
     private OrderServiceImpl orderService;
@@ -86,8 +93,20 @@ public class OrderServiceImplTest {
 
         verify(productRepository).findById(1L);
         verify(orderRepository).save(any(Order.class));
+        verify(inventoryTransactionRepository).save(any(InventoryTransaction.class));
+
+        ArgumentCaptor<InventoryTransaction> captor = ArgumentCaptor.forClass(InventoryTransaction.class);
+
+        verify(inventoryTransactionRepository).save(captor.capture());
+
+        InventoryTransaction transaction = captor.getValue();
+
+        assertEquals(InventoryTransactionType.ORDER_PLACED, transaction.getType());
+        assertEquals(-2, transaction.getQuantity());
+        assertEquals(product, transaction.getProduct());
     }
 
+    @Test
     void createOrder_shouldThrowWhenProductDoesNotExist() {
         CreateOrderItemRequest itemRequest = new CreateOrderItemRequest(999L, 2);
 
